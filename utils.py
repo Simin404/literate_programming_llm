@@ -10,13 +10,16 @@ def data_from_csv(file_path):
     return all_df
 
 def split_data(df):
-    train_path = 'data/train.csv'
-    test_path = 'data/test.csv'
     df1 = df[df.groupby(['task','language']).transform('size') > 1]
     df_test = df1.groupby(['task','language']).sample(n = 1, random_state = 1)
+
+    test_path = 'data/test_'+ str(df_test.shape[0])+'.csv'
+
     df_test.to_csv(test_path, index=False) 
     df_train = df1.drop(df_test.index)
-    df_train.to_csv(train_path, index=False) 
+    train_path = 'data/train_'+ str(df_train.shape[0])+'.csv'
+
+    df_train.to_csv(train_path, index=False)
     return train_path, test_path
 
 
@@ -69,3 +72,5 @@ def loading_embeddings(file_path):
         return saved_emb
     except:
         print('File not found!')
+
+
