@@ -4,6 +4,34 @@ from collections import Counter
 import os
 import torch
 import pandas as pd
+import os
+from os.path import isfile, join
+from os import listdir
+
+
+def file_to_df(file_path):
+    tasks= [f for f in os.listdir(file_path) if not f.startswith('.') ]
+    task_names=[]
+    language_names=[]
+    code_lists=[]
+    for oneTask in tasks:
+        oneTaskDir=file_path+"/"+oneTask
+        languages=[f for f in os.listdir(oneTaskDir) if not f.startswith('.') ]
+        for lang in languages:
+            codeDir=test=oneTaskDir+"/"+lang
+            if os.path.isdir(codeDir):
+                onlyfiles = [f for f in listdir(codeDir) if isfile(join(codeDir, f))]
+                for file_name in onlyfiles:
+                    code_file_dir=codeDir+"/"+file_name
+                    with open(code_file_dir, 'r') as file:
+                        data = file.read()
+                        task_names.append(oneTask)
+                        language_names.append(lang)
+                        code_lists.append(data)
+
+    d = {'task': task_names, 'language': language_names,"code":code_lists}
+    df = pd.DataFrame(data=d)
+    df.to_csv("data/RosettaCodeData.csv")
 
 def data_from_csv(file_path):
     all_df=pd.read_csv(file_path)
@@ -72,5 +100,6 @@ def loading_embeddings(file_path):
         return saved_emb
     except:
         print('File not found!')
+
 
 

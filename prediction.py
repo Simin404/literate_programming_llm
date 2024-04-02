@@ -6,19 +6,19 @@ import extracting_embedding
 from clustering import KNN
 from sklearn.preprocessing import LabelEncoder
 
-def map_label(train_label_lang, test_label_lang):
+def map_label(train_label, test_label):
 
     le = LabelEncoder()
-    le=le.fit(test_label_lang)
+    le=le.fit(test_label)
 
-    train_label_encoding=le.transform(train_label_lang)
-    test_label_encoding=le.transform(test_label_lang)
+    train_label_encoding=le.transform(train_label)
+    test_label_encoding=le.transform(test_label)
 
     train_y = torch.tensor(train_label_encoding)
     test_y = torch.tensor(test_label_encoding)
 
-    print(f"Original train count: {len(train_label_lang)}, "
-        f"test count: {len(test_label_lang)}.")
+    print(f"Original train count: {len(train_label)}, "
+        f"test count: {len(test_label)}.")
     print(f"After mapping: train count: {len(train_y)}, "
         f"test count: {len(test_y)}.")
 
@@ -27,8 +27,8 @@ def map_label(train_label_lang, test_label_lang):
 def analyze_data(model_name, train_df, test_df, device, train_path = None, test_path = None, mode = 'two_label'):
     if mode == 'emb':
         train_path = extracting_embedding.extract_embedding(train_df, device, model=model_name, max_len = 100)
-        test_path = extracting_embedding.extract_embedding(train_df, device, model=model_name, max_len = 100)
-
+        test_path = extracting_embedding.extract_embedding(test_df, device, model=model_name, max_len = 100)
+    
     train_emb = torch.load(train_path, map_location="cpu")
     test_emb = torch.load(test_path, map_location="cpu")
 
@@ -46,9 +46,9 @@ def analyze_data(model_name, train_df, test_df, device, train_path = None, test_
         train_y_task, test_y_task, _ = map_label(train_df['task'], test_df['task'])
         
         knn_lang = KNN(train_emb, train_y_lang)
-        knna_task = KNN(train_emb, train_y_task)
+        knn_task = KNN(train_emb, train_y_task)
         
-        predict_two(test_emb, knn_lang, knna_task, test_y_lang, test_y_task) 
+        predict_two(test_emb, knn_lang, knn_task, test_y_lang, test_y_task) 
         
 
 def predict_two(test, model_lang, model_task, lang_y, task_y):
