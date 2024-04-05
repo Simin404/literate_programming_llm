@@ -51,6 +51,34 @@ def split_data(df):
     return train_path, test_path
 
 
+def balanced_split_data(df):
+    df1 = df[df.groupby(['task','language']).transform('size') > 1]
+
+    print('The Number of Distinct Languages:{}'.format(df1['language'].nunique()))
+    print('The Number of Distinct Tasks:{}'.format( df1['task'].nunique()))
+
+    min_limit = min(df1['language'].nunique(), df1['task'].nunique())
+
+    # Get the top 532 tasks that appear most frequently
+    top_tasks = df1['task'].value_counts().head(min_limit).index.tolist()
+
+    # Create a subset DataFrame
+    subset_df = df1[df1['task'].isin(top_tasks)]
+    print('The Number of Distinct Languages:{}'.format(subset_df['language'].nunique()))
+    print('The Number of Distinct Tasks:{}'.format(subset_df['task'].nunique()))
+
+    df_test = subset_df.groupby(['task','language']).sample(n = 1, random_state = 1)
+
+    test_path = 'data/test_'+ str(df_test.shape[0])+'.csv'
+
+    df_test.to_csv(test_path, index=False) 
+    df_train = subset_df.drop(df_test.index)
+    train_path = 'data/train_'+ str(df_train.shape[0])+'.csv'
+
+    df_train.to_csv(train_path, index=False)
+    return train_path, test_path
+
+
 def load_data():
     # Load the Cakiki/Rosetta Code dataset
     all_data = load_dataset("cakiki/rosetta-code")['train']

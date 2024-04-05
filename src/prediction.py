@@ -1,9 +1,11 @@
 import torch
 import time
 import utils
+import numpy as np
 import pandas as pd
 import extracting_embedding
 from clustering import KNN
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 
 def map_label(train_label, test_label):
@@ -39,19 +41,27 @@ def analyze_data(model_name, train_df, test_df, device, train_path = None, test_
 
         knn_model = KNN(train_emb, train_y)
         
-        predict_one(test_emb, knn_model, test_y, le) 
+        pred_y = predict_one(test_emb, knn_model) 
+        caculate_acc(pred_y, test_y, 'combined labels')
+        statstic(pred_y, test_y, le)
         
     else:
-        train_y_lang, test_y_lang, _ = map_label(train_df['language'], test_df['language'])
-        train_y_task, test_y_task, _ = map_label(train_df['task'], test_df['task'])
+        train_y_lang, test_y_lang, le_lang = map_label(train_df['language'], test_df['language'])
+        train_y_task, test_y_task, le_task = map_label(train_df['task'], test_df['task'])
         
         knn_lang = KNN(train_emb, train_y_lang)
         knn_task = KNN(train_emb, train_y_task)
         
-        predict_two(test_emb, knn_lang, knn_task, test_y_lang, test_y_task) 
-        
+        pred_y_lang, pred_y_task = predict_two(test_emb, knn_lang, knn_task)
+        dic_lang = acc_per(pred_y_lang, test_y_lang, le_lang,)
+        dic_task = acc_per(pred_y_task, test_y_task, le_task)
 
-def predict_two(test, model_lang, model_task, lang_y, task_y):
+        caculate_acc(pred_y_lang, test_y_lang, 'Programming Language')
+        caculate_acc(pred_y_task, test_y_task, 'Programming Task') 
+        return dic_lang, dic_task
+
+
+def predict_two(test, model_lang, model_task):
     num_test = len(test)
     step = 10
     time_start = time.time()
@@ -76,9 +86,9 @@ def predict_two(test, model_lang, model_task, lang_y, task_y):
         if i % 5000 == 0:
             print('Time elapsed: {:.2f} seconds, Data predicted: {}'.format(time.time() - time_start, i))
             time_start = time.time()
+    return pred_y_lang, pred_y_task
 
-    caculate_acc(pred_y_lang, lang_y, 'Programming Language')
-    caculate_acc(pred_y_task, task_y, 'Programming Task')
+
 
 
 def caculate_acc(pred_y, test_y, task_name):
@@ -88,7 +98,82 @@ def caculate_acc(pred_y, test_y, task_name):
     print("Accuracy of {} prediction: {:.2f}%".format(task_name, acc))
 
 
-def predict_one(test_x, model, test_y, le):
+def acc_per(pred_y, real_y, le):
+    languages = list(torch.unique(real_y))
+    lang_dic = {}
+    for number in languages:
+        indice = ((real_y==number).nonzero().squeeze())
+        r_y = torch.index_select(real_y, 0, indice)
+        p_y = torch.index_select(pred_y, 0, indice)
+        acc = (p_y == r_y).sum().item() / r_y.size(0)
+        a = number.numpy()
+        language=le.inverse_transform([a])
+        lang_dic[language[0]] = acc
+    return lang_dic
+
+def count_data(data):
+    bins = {'=0.0': 0, '(0.0 - 0.1]': 0, '(0.1 - 0.2]': 0, '(0.2 - 0.3]': 0, '(0.3 - 0.4]': 0,
+            '(0.4 - 0.5]': 0, '(0.5 - 0.6]': 0, '(0.6 - 0.7]': 0, '(0.7 - 0.8]': 0, '(0.8 - 0.9]': 0, '(0.9 - 1.0]': 0}
+    
+    for value in data.values():
+        if value == 0.0:
+            bins['=0.0'] += 1
+        elif 0.0 < value <= 0.1:
+            bins['(0.0 - 0.1]'] += 1
+        elif 0.1 < value <= 0.2:
+            bins['(0.1 - 0.2]'] += 1
+        elif 0.2 < value <= 0.3:
+            bins['(0.2 - 0.3]'] += 1
+        elif 0.3 < value <= 0.4:
+            bins['(0.3 - 0.4]'] += 1
+        elif 0.4 < value <= 0.5:
+            bins['(0.4 - 0.5]'] += 1
+        elif 0.5 < value <= 0.6:
+            bins['(0.5 - 0.6]'] += 1
+        elif 0.6 < value <= 0.7:
+            bins['(0.6 - 0.7]'] += 1
+        elif 0.7 < value <= 0.8:
+            bins['(0.7 - 0.8]'] += 1
+        elif 0.8 < value <= 0.9:
+            bins['(0.8 - 0.9]'] += 1
+        elif 0.9 < value <= 1.0:
+            bins['(0.9 - 1.0]'] += 1
+    
+    return bins
+
+def plot_analysis(bins, task_name):
+    labels = bins.keys()
+    counts = bins.values()
+
+    plt.bar(labels, counts, color=['blue', 'green', 'orange', 'red', 'purple', 'brown', 'pink', 'cyan', 'magenta', 'yellow', 'black'])
+    plt.xlabel('Value Ranges')
+    plt.ylabel('Frequency')
+    plt.title(task_name + 'Prediction Accuarcy Analysis')
+    plt.xticks(rotation=45, ha='right')
+    plt.savefig('image/'+task_name+'.png')
+
+def plot_multi_count(analysis, data_labels):
+    labels = analysis[0].keys()
+    width = 0.1
+    fig, ax = plt.subplots()
+    colors = ['blue', 'green', 'orange', 'red', 'purple', 'brown', 'pink', 'cyan', 'magenta', 'yellow', 'black']
+    x = np.arange(len(labels))
+
+    for i, (bins, label) in enumerate(zip(analysis, data_labels)):
+        counts = list(bins.values())
+        ax.bar(x + i * width, counts, width=width, color=colors[i], label=label)
+
+    ax.set_xlabel('Value Ranges')
+    ax.set_ylabel('Frequency')
+    ax.set_title('Data Analysis')
+    ax.set_xticks(x + width * (len(analysis) - 1) / 2)
+    ax.set_xticklabels(labels)
+    ax.legend()
+    plt.xticks(rotation=45, ha='right')
+    plt.show()
+
+
+def predict_one(test_x, model):
     num_test = len(test_x)
     step = 10
     pred_y = []
@@ -105,9 +190,6 @@ def predict_one(test_x, model, test_y, le):
         if i%5000==0:
             print('Time elapsed: {:.2f} seconds, Data predicted:{}'.format(time.time()-time_start, i))
             time_start = time.time()
-            
-    caculate_acc(pred_y, test_y, 'combined labels')
-    statstic(pred_y, test_y, le)
     return pred_y
 
 
