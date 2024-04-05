@@ -19,10 +19,10 @@ def map_label(train_label, test_label):
     train_y = torch.tensor(train_label_encoding)
     test_y = torch.tensor(test_label_encoding)
 
-    print(f"Original train count: {len(train_label)}, "
-        f"test count: {len(test_label)}.")
-    print(f"After mapping: train count: {len(train_y)}, "
-        f"test count: {len(test_y)}.")
+    # print(f"Original train count: {len(train_label)}, "
+    #     f"test count: {len(test_label)}.")
+    # print(f"After mapping: train count: {len(train_y)}, "
+    #     f"test count: {len(test_y)}.")
 
     return train_y, test_y, le
 
@@ -112,43 +112,43 @@ def acc_per(pred_y, real_y, le):
     return lang_dic
 
 def count_data(data):
-    bins = {'=0.0': 0, '(0.0 - 0.1]': 0, '(0.1 - 0.2]': 0, '(0.2 - 0.3]': 0, '(0.3 - 0.4]': 0,
-            '(0.4 - 0.5]': 0, '(0.5 - 0.6]': 0, '(0.6 - 0.7]': 0, '(0.7 - 0.8]': 0, '(0.8 - 0.9]': 0, '(0.9 - 1.0]': 0}
+    bins = {'=0.0': [], '(0.0 - 0.1]': [], '(0.1 - 0.2]': [], '(0.2 - 0.3]': [], '(0.3 - 0.4]': [],
+            '(0.4 - 0.5]': [], '(0.5 - 0.6]': [], '(0.6 - 0.7]': [], '(0.7 - 0.8]': [], '(0.8 - 0.9]': [], '(0.9 - 1.0]': []}
     
-    for value in data.values():
+    for key, value in data.items():
         if value == 0.0:
-            bins['=0.0'] += 1
+            bins['=0.0'].append(key)
         elif 0.0 < value <= 0.1:
-            bins['(0.0 - 0.1]'] += 1
+            bins['(0.0 - 0.1]'].append(key)
         elif 0.1 < value <= 0.2:
-            bins['(0.1 - 0.2]'] += 1
+            bins['(0.1 - 0.2]'].append(key)
         elif 0.2 < value <= 0.3:
-            bins['(0.2 - 0.3]'] += 1
+            bins['(0.2 - 0.3]'].append(key)
         elif 0.3 < value <= 0.4:
-            bins['(0.3 - 0.4]'] += 1
+            bins['(0.3 - 0.4]'].append(key)
         elif 0.4 < value <= 0.5:
-            bins['(0.4 - 0.5]'] += 1
+            bins['(0.4 - 0.5]'].append(key)
         elif 0.5 < value <= 0.6:
-            bins['(0.5 - 0.6]'] += 1
+            bins['(0.5 - 0.6]'].append(key)
         elif 0.6 < value <= 0.7:
-            bins['(0.6 - 0.7]'] += 1
+            bins['(0.6 - 0.7]'].append(key)
         elif 0.7 < value <= 0.8:
-            bins['(0.7 - 0.8]'] += 1
+            bins['(0.7 - 0.8]'].append(key)
         elif 0.8 < value <= 0.9:
-            bins['(0.8 - 0.9]'] += 1
+            bins['(0.8 - 0.9]'].append(key)
         elif 0.9 < value <= 1.0:
-            bins['(0.9 - 1.0]'] += 1
+            bins['(0.9 - 1.0]'].append(key)
     
     return bins
 
-def plot_analysis(bins, task_name):
+def plot_count(bins, task_name):
     labels = bins.keys()
-    counts = bins.values()
+    counts = [len(i) for i in bins.values()]
 
     plt.bar(labels, counts, color=['blue', 'green', 'orange', 'red', 'purple', 'brown', 'pink', 'cyan', 'magenta', 'yellow', 'black'])
     plt.xlabel('Value Ranges')
     plt.ylabel('Frequency')
-    plt.title(task_name + 'Prediction Accuarcy Analysis')
+    plt.title(task_name + ' Prediction Accuarcy Analysis')
     plt.xticks(rotation=45, ha='right')
     plt.savefig('image/'+task_name+'.png')
 
@@ -160,12 +160,12 @@ def plot_multi_count(analysis, data_labels):
     x = np.arange(len(labels))
 
     for i, (bins, label) in enumerate(zip(analysis, data_labels)):
-        counts = list(bins.values())
+        counts = [len(i) for i in bins.values()]
         ax.bar(x + i * width, counts, width=width, color=colors[i], label=label)
 
     ax.set_xlabel('Value Ranges')
     ax.set_ylabel('Frequency')
-    ax.set_title('Data Analysis')
+    ax.set_title('Prediction Accuarcy Analysis')
     ax.set_xticks(x + width * (len(analysis) - 1) / 2)
     ax.set_xticklabels(labels)
     ax.legend()
