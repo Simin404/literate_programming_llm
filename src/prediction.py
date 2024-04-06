@@ -59,6 +59,31 @@ def analyze_data(model_name, train_df, test_df, device, train_path = None, test_
         caculate_acc(pred_y_lang, test_y_lang, 'Programming Language')
         caculate_acc(pred_y_task, test_y_task, 'Programming Task') 
         return dic_lang, dic_task
+    
+def part_data_analysis(languages, train_df, test_df, train_file, test_file):
+    indices_train = train_df.index[train_df['language'].isin(languages)].tolist()
+    indices_test = test_df.index[test_df['language'].isin(languages)].tolist()
+
+    train_y_lang, test_y_lang, le_lang = map_label(train_df['language'], test_df['language'])
+    train_y_task, test_y_task, le_task = map_label(train_df['task'], test_df['task'])
+
+    train_emb =  torch.load(train_file, map_location="cpu")
+    test_emb = torch.load(test_file, map_location="cpu")
+
+    train_emb_sub = torch.index_select(train_emb, 0, torch.tensor(indices_train))
+    train_y_task_sub = torch.index_select(train_y_task, 0, torch.tensor(indices_train))
+    train_y_lang_sub = torch.index_select(train_y_lang, 0, torch.tensor(indices_train))
+
+    test_emb_sub = torch.index_select(test_emb, 0, torch.tensor(indices_test))
+    test_y_task_sub = torch.index_select(test_y_task, 0, torch.tensor(indices_test))
+    test_y_lang_sub = torch.index_select(test_y_lang, 0, torch.tensor(indices_test))
+
+    knn_codebert_lang_sub = KNN(train_emb_sub, train_y_lang_sub)
+    knn_codebert_task_sub = KNN(train_emb_sub, train_y_task_sub)
+
+    pred_y_lang, pred_y_task = predict_two(test_emb_sub, knn_codebert_lang_sub, knn_codebert_task_sub)
+    caculate_acc(pred_y_lang, test_y_lang_sub, 'Programming Language')
+    caculate_acc(pred_y_task, test_y_task_sub, 'Programming Task')
 
 
 def predict_two(test, model_lang, model_task):
@@ -137,8 +162,7 @@ def count_data(data):
         elif 0.8 < value <= 0.9:
             bins['(0.8 - 0.9]'].append(key)
         elif 0.9 < value <= 1.0:
-            bins['(0.9 - 1.0]'].append(key)
-    
+            bins['(0.9 - 1.0]'].append(key)   
     return bins
 
 def plot_count(bins, task_name):
