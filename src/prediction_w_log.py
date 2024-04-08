@@ -18,16 +18,16 @@ def map_label(train_label, test_label, logger):
     train_y = torch.tensor(train_label_encoding)
     test_y = torch.tensor(test_label_encoding)
 
-    logger.info(f"Original train count: {len(train_label)}, "
-                f"test count: {len(test_label)}.")
-    logger.info(f"After mapping: train count: {len(train_y)}, "
-                f"test count: {len(test_y)}.")
+    # logger.info(f"Original train count: {len(train_label)}, "
+    #             f"test count: {len(test_label)}.")
+    # logger.info(f"After mapping: train count: {len(train_y)}, "
+    #             f"test count: {len(test_y)}.")
 
     return train_y, test_y, le
 
 def analyze_data(model_name, train_df, test_df, device, logger, train_path=None, test_path=None, mode='two_label'):
 
-    logger.info('THE MODEL ANALYZED:', model_name)
+    logger.info(f'THE MODEL ANALYZED:{model_name}')
     if mode == 'emb':
         train_path = extracting_embedding.extract_embedding(train_df, device, model=model_name, max_len=100)
         test_path = extracting_embedding.extract_embedding(test_df, device, model=model_name, max_len=100)
@@ -38,15 +38,15 @@ def analyze_data(model_name, train_df, test_df, device, logger, train_path=None,
     if mode == 'one_label':
         train_df["combine"] = train_df["task"] + "@" + train_df["language"]
         test_df["combine"] = test_df["task"] + "@" + test_df["language"]
-        train_y, test_y, le = map_label(train_df['combine'], test_df['combine'])
+        train_y, test_y, le = map_label(train_df['combine'], test_df['combine'], logger)
 
         knn_model = KNN(train_emb, train_y)
 
         predict_one(test_emb, knn_model, test_y, le, logger)
 
     else:
-        train_y_lang, test_y_lang, _ = map_label(train_df['language'], test_df['language'])
-        train_y_task, test_y_task, _ = map_label(train_df['task'], test_df['task'])
+        train_y_lang, test_y_lang, _ = map_label(train_df['language'], test_df['language'], logger)
+        train_y_task, test_y_task, _ = map_label(train_df['task'], test_df['task'], logger)
 
         knn_lang = KNN(train_emb, train_y_lang)
         knn_task = KNN(train_emb, train_y_task)

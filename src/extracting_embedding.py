@@ -45,8 +45,9 @@ def extract_embedding(df, device, model='gpt', max_len = 100):
         embed_from_local(df, device, output_path, tokenizer, model, max_len = 100)
     else:
         print('Model vertified: saved model')
-        tokenizer = RobertaTokenizer.from_pretrained("microsoft/codebert-base-mlm")
-        model = RobertaForMaskedLM.from_pretrained('model/'+model, output_hidden_states=True).to(device)
+        output_path = '../out/'+model+'_'+str(len(df))+'.pt'
+        tokenizer = RobertaTokenizer.from_pretrained("roberta-base", max_length=512)
+        model = RobertaForMaskedLM.from_pretrained('../model/co-roberta/'+ model, output_hidden_states=True).to(device)
         embed_from_local(df, device, output_path, tokenizer, model, max_len = 100)
     
     return output_path

@@ -1,0 +1,44 @@
+2024-04-08 08:50:22,856 - __main__ - INFO - Device: cuda
+2024-04-08 08:50:24,264 - __main__ - INFO - THE MODEL ANALYZED:epoch10
+2024-04-08 08:50:24,734 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 08:50:24,734 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 08:50:24,746 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 08:50:24,746 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 08:50:25,167 - __main__ - INFO - Time elapsed: 0.42 seconds, Data predicted: 0
+2024-04-08 08:53:37,854 - __main__ - INFO - Time elapsed: 192.69 seconds, Data predicted: 5000
+2024-04-08 08:56:55,271 - __main__ - INFO - Time elapsed: 197.42 seconds, Data predicted: 10000
+2024-04-08 08:59:21,056 - __main__ - INFO - Accuracy of Programming Language prediction: 54.53%
+2024-04-08 08:59:21,056 - __main__ - INFO - Accuracy of Programming Task prediction: 26.31%
+2024-04-08 08:59:21,057 - __main__ - INFO - THE MODEL ANALYZED:epoch10
+2024-04-08 08:59:21,590 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 08:59:21,590 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 08:59:22,511 - __main__ - INFO - Time elapsed: 0.92 seconds, Data predicted:0
+2024-04-08 09:06:02,293 - __main__ - INFO - Time elapsed: 399.78 seconds, Data predicted:5000
+2024-04-08 09:12:30,240 - __main__ - INFO - Time elapsed: 387.95 seconds, Data predicted:10000
+2024-04-08 09:17:43,682 - __main__ - INFO - Accuracy of combined labels prediction: 14.14%
+2024-04-08 09:17:51,469 - __main__ - INFO - Total Number: 13786
+2024-04-08 09:17:51,470 - __main__ - INFO - All right: 1950
+2024-04-08 09:17:51,470 - __main__ - INFO - Language correct: 5095
+2024-04-08 09:17:51,470 - __main__ - INFO - Task correct: 1314
+2024-04-08 09:17:51,472 - __main__ - INFO - THE MODEL ANALYZED:epoch15
+2024-04-08 14:58:53,428 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 14:58:53,429 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 14:58:53,433 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 14:58:53,433 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 14:58:53,891 - __main__ - INFO - Time elapsed: 0.46 seconds, Data predicted: 0
+2024-04-08 15:02:11,636 - __main__ - INFO - Time elapsed: 197.74 seconds, Data predicted: 5000
+2024-04-08 15:05:29,407 - __main__ - INFO - Time elapsed: 197.77 seconds, Data predicted: 10000
+2024-04-08 15:07:59,724 - __main__ - INFO - Accuracy of Programming Language prediction: 54.25%
+2024-04-08 15:07:59,725 - __main__ - INFO - Accuracy of Programming Task prediction: 24.19%
+2024-04-08 15:07:59,726 - __main__ - INFO - THE MODEL ANALYZED:epoch15
+2024-04-08 15:08:00,110 - __main__ - INFO - Original train count: 24892, test count: 13786.
+2024-04-08 15:08:00,111 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 15:08:00,778 - __main__ - INFO - Time elapsed: 0.67 seconds, Data predicted:0
+2024-04-08 15:12:57,582 - __main__ - INFO - Time elapsed: 296.80 seconds, Data predicted:5000
+2024-04-08 15:17:50,052 - __main__ - INFO - Time elapsed: 292.47 seconds, Data predicted:10000
+2024-04-08 15:21:11,229 - __main__ - INFO - Accuracy of combined labels prediction: 13.36%
+2024-04-08 15:21:15,920 - __main__ - INFO - Total Number: 13786
+2024-04-08 15:21:15,921 - __main__ - INFO - All right: 1842
+2024-04-08 15:21:15,921 - __main__ - INFO - Language correct: 5098
+2024-04-08 15:21:15,921 - __main__ - INFO - Task correct: 1160
+2024-04-08 15:21:15,923 - __main__ - INFO - THE MODEL ANALYZED:epoch20

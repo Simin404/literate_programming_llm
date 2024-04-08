@@ -109,7 +109,7 @@ def predict_two(test, model_lang, model_task):
             pred_y_task = torch.cat((pred_y_task, predicted_2), 0)
 
         if i % 5000 == 0:
-            print('Time elapsed: {:.2f} seconds, Data predicted: {}'.format(time.time() - time_start, i))
+            print('Time elapsed: {:.2f} seconds, Data predicted: {}'.format(time.time() - time_start, i+1))
             time_start = time.time()
     return pred_y_lang, pred_y_task
 
@@ -176,7 +176,7 @@ def plot_count(bins, task_name):
     plt.xticks(rotation=45, ha='right')
     plt.savefig('image/'+task_name+'.png')
 
-def plot_multi_count(analysis, data_labels):
+def plot_multi_count(analysis, data_labels, task_name):
     labels = analysis[0].keys()
     width = 0.1
     fig, ax = plt.subplots()
@@ -189,12 +189,11 @@ def plot_multi_count(analysis, data_labels):
 
     ax.set_xlabel('Value Ranges')
     ax.set_ylabel('Frequency')
-    ax.set_title('Prediction Accuarcy Analysis')
     ax.set_xticks(x + width * (len(analysis) - 1) / 2)
     ax.set_xticklabels(labels)
     ax.legend()
     plt.xticks(rotation=45, ha='right')
-    plt.show()
+    plt.savefig('image/'+task_name+'.png')
 
 
 def predict_one(test_x, model):
@@ -212,7 +211,7 @@ def predict_one(test_x, model):
         else:
             pred_y = torch.cat((pred_y, predicted), 0)
         if i%5000==0:
-            print('Time elapsed: {:.2f} seconds, Data predicted:{}'.format(time.time()-time_start, i))
+            print('Time elapsed: {:.2f} seconds, Data predicted:{}'.format(time.time()-time_start, i+1))
             time_start = time.time()
     return pred_y
 

@@ -1,0 +1,12 @@
+2024-04-08 15:42:50,013 - __main__ - INFO - Device: cuda
+2024-04-08 15:42:50,306 - __main__ - INFO - THE MODEL ANALYZED:10
+2024-04-08 15:42:51,550 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 15:42:51,554 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 15:42:52,271 - __main__ - INFO - Time elapsed: 0.62 seconds, Data predicted: 0
+2024-04-08 15:45:04,944 - __main__ - INFO - Time elapsed: 132.67 seconds, Data predicted: 5000
+2024-04-08 15:47:20,459 - __main__ - INFO - Time elapsed: 135.52 seconds, Data predicted: 10000
+2024-04-08 15:49:04,664 - __main__ - INFO - Accuracy of Programming Language prediction: 54.53%
+2024-04-08 15:49:04,664 - __main__ - INFO - Accuracy of Programming Task prediction: 26.31%
+2024-04-08 15:49:04,665 - __main__ - INFO - THE MODEL ANALYZED:10
+2024-04-08 15:49:05,072 - __main__ - INFO - After mapping: train count: 24892, test count: 13786.
+2024-04-08 15:49:05,605 - __main__ - INFO - Time elapsed: 0.53 seconds, Data predicted:0
