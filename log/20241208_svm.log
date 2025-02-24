@@ -1,0 +1,103 @@
+2024-12-07 12:49:42,461 - Model: bert; Classifier: SVM
+2024-12-07 14:09:30,176 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-07 15:32:32,282 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-07 15:36:10,617 - Final Accuracy -> Language: 0.7043, Task: 0.5641, Desc: 0.1992
+2024-12-10 10:09:17,058 - Model: gpt; Classifier: SVM
+2024-12-10 10:29:02,889 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:00:32,500 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:13:24,791 - Final Accuracy -> Language: 0.4904, Task: 0.1504, Desc: 0.0169
+2024-12-10 11:13:24,939 - Model: roberta; Classifier: SVM
+2024-12-10 11:27:01,588 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:49:56,563 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:59:28,386 - Final Accuracy -> Language: 0.7204, Task: 0.4779, Desc: 0.1053
+
+
+2024-12-10 11:59:28,841 - Model: llama8b; Classifier: SVM
+2024-12-10 12:50:45,203 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 13:56:30,097 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 14:16:52,123 - Final Accuracy -> Language: 0.8552, Task: 0.7410, Desc: 0.5338
+
+2024-12-07 15:36:12,396 - Model: falcon7b; Classifier: SVM
+2024-12-07 20:35:23,255 - Language: Best Parameters -> {'C': 500, 'degree': 5, 'kernel': 'poly'}
+2024-12-08 02:30:42,436 - Task: Best Parameters -> {'C': 500, 'degree': 5, 'kernel': 'poly'}
+2024-12-08 02:42:58,356 - Final Accuracy -> Language: 0.8193, Task: 0.7006, Desc: 0.3402
+2024-12-08 20:07:21,489 - Model: falcon7b; Classifier: SVM
+2024-12-09 02:57:02,188 - Language: Best Parameters -> {'C': 1000, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 09:56:31,376 - Task: Best Parameters -> {'C': 1000, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 10:12:39,296 - Final Accuracy -> Language: 0.8039, Task: 0.6856, Desc: 0.3628
+2024-12-09 16:57:40,632 - Model: falcon7b; Classifier: SVM
+2024-12-09 19:33:37,039 - Language: Best Parameters -> {'C': 5000, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 22:19:30,477 - Task: Best Parameters -> {'C': 5000, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 22:36:49,438 - Final Accuracy -> Language: 0.8240, Task: 0.7069, Desc: 0.3571
+
+
+2024-12-10 08:12:55,144 - Model: falcon11b; Classifier: SVM
+2024-12-10 11:27:27,421 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 14:32:49,114 - Task: Best Parameters -> {'C': 1000, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 14:55:27,088 - Final Accuracy -> Language: 0.8292, Task: 0.7249, Desc: 0.3797
+2024-12-10 08:13:33,186 - Model: falcon40b; Classifier: SVM
+2024-12-10 14:35:13,245 - Language: Best Parameters -> {'C': 1000, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:17:55,952 - Task: Best Parameters -> {'C': 1000, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:47:09,354 - Final Accuracy -> Language: 0.8398, Task: 0.7249, Desc: 0.3177
+
+2024-12-08 20:07:55,778 - Model: llama7b; Classifier: SVM
+2024-12-09 03:03:53,204 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 10:17:06,544 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-09 10:30:24,618 - Final Accuracy -> Language: 0.8313, Task: 0.7149, Desc: 0.4323
+2024-12-10 11:59:28,841 - Model: llama8b; Classifier: SVM
+2024-12-10 12:50:45,203 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 13:56:30,097 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 14:16:52,123 - Final Accuracy -> Language: 0.8552, Task: 0.7410, Desc: 0.5338
+2024-12-10 14:16:52,435 - Model: llama13b; Classifier: SVM
+2024-12-10 15:12:22,133 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 16:13:47,181 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 16:35:45,274 - Final Accuracy -> Language: 0.8495, Task: 0.7385, Desc: 0.4549
+2024-12-10 16:35:45,838 - Model: llama70b; Classifier: SVM
+2024-12-10 17:52:45,366 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:28:36,172 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:58:36,124 - Final Accuracy -> Language: 0.8648, Task: 0.7452, Desc: 0.4342
+2024-12-09 16:57:45,386 - Model: llama70b; Classifier: SVM
+2024-12-09 21:27:33,780 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 01:43:29,743 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 02:08:30,300 - Final Accuracy -> Language: 0.8648, Task: 0.7452, Desc: 0.4342
+
+
+2024-12-10 08:12:35,178 - Model: embedding_ada; Classifier: SVM
+2024-12-10 08:12:35,285 - NaN values removed from embeddings.
+2024-12-10 09:21:28,782 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 10:53:24,331 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:08:01,008 - Final Accuracy -> Language: 0.8453, Task: 0.8524, Desc: 0.9361
+2024-12-10 08:14:14,223 - Model: embedding_small; Classifier: SVM
+2024-12-10 09:26:14,188 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:01:30,789 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:18:54,175 - Final Accuracy -> Language: 0.8122, Task: 0.8242, Desc: 0.8929
+2024-12-10 08:14:37,903 - Model: embedding_large; Classifier: SVM
+2024-12-10 10:59:59,682 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 13:34:44,056 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 13:52:44,368 - Final Accuracy -> Language: 0.8544, Task: 0.8703, Desc: 0.9624
+
+
+2024-12-10 10:10:48,378 - Model: codegpt; Classifier: SVM
+2024-12-10 10:27:23,895 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 10:56:12,250 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:08:17,069 - Final Accuracy -> Language: 0.7750, Task: 0.6401, Desc: 0.2688
+2024-12-10 11:08:17,214 - Model: codebert; Classifier: SVM
+2024-12-10 11:22:03,352 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:44:42,623 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 11:52:34,643 - Final Accuracy -> Language: 0.7149, Task: 0.4019, Desc: 0.0733
+2024-12-10 11:52:35,022 - Model: code7b; Classifier: SVM
+2024-12-10 12:41:55,842 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 13:48:40,357 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 14:10:50,832 - Final Accuracy -> Language: 0.8566, Task: 0.7562, Desc: 0.4699
+2024-12-10 14:10:51,246 - Model: code13b; Classifier: SVM
+2024-12-10 15:07:35,668 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 16:11:02,371 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 16:32:36,767 - Final Accuracy -> Language: 0.8642, Task: 0.7621, Desc: 0.4887
+2024-12-10 16:32:37,507 - Model: code34b; Classifier: SVM
+2024-12-10 17:45:49,977 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:26:07,689 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 19:56:15,402 - Final Accuracy -> Language: 0.8664, Task: 0.7634, Desc: 0.3910
+2024-12-10 19:56:15,956 - Model: code70b; Classifier: SVM
+2024-12-10 20:53:23,592 - Language: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 22:08:43,587 - Task: Best Parameters -> {'C': 100, 'degree': 1, 'kernel': 'poly'}
+2024-12-10 22:31:07,380 - Final Accuracy -> Language: 0.8660, Task: 0.7543, Desc: 0.3910

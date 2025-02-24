@@ -1,0 +1,78 @@
+2024-12-06 20:02:42,623 - Model: bert; Classifier: KNN
+2024-12-06 20:03:28,826 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-06 20:04:16,466 - Task: Best Parameters -> {'n_neighbors': np.int64(14)}
+2024-12-06 20:04:18,163 - Final Accuracy -> Language: 0.4544, Task: 0.2929, Desc: 0.0583
+2024-12-06 20:04:18,213 - Model: gpt; Classifier: KNN
+2024-12-06 20:05:03,655 - Language: Best Parameters -> {'n_neighbors': np.int64(14)}
+2024-12-06 20:05:51,430 - Task: Best Parameters -> {'n_neighbors': np.int64(21)}
+2024-12-06 20:05:53,166 - Final Accuracy -> Language: 0.2138, Task: 0.0538, Desc: 0.0056
+2024-12-06 20:05:53,225 - Model: roberta; Classifier: KNN
+2024-12-06 20:06:38,830 - Language: Best Parameters -> {'n_neighbors': np.int64(9)}
+2024-12-06 20:07:25,982 - Task: Best Parameters -> {'n_neighbors': np.int64(20)}
+2024-12-06 20:07:27,780 - Final Accuracy -> Language: 0.4288, Task: 0.1843, Desc: 0.0244
+2024-12-06 20:07:28,083 - Model: falcon7b; Classifier: KNN
+2024-12-06 20:12:16,874 - Language: Best Parameters -> {'n_neighbors': np.int64(9)}
+2024-12-06 20:17:25,042 - Task: Best Parameters -> {'n_neighbors': np.int64(17)}
+2024-12-06 20:17:36,903 - Final Accuracy -> Language: 0.5717, Task: 0.1873, Desc: 0.0376
+2024-12-06 20:17:37,001 - Model: falcon11b; Classifier: KNN
+2024-12-06 20:22:12,197 - Language: Best Parameters -> {'n_neighbors': np.int64(10)}
+2024-12-06 20:26:54,929 - Task: Best Parameters -> {'n_neighbors': np.int64(21)}
+2024-12-06 20:27:05,478 - Final Accuracy -> Language: 0.6481, Task: 0.2658, Desc: 0.0489
+2024-12-06 20:27:07,650 - Model: falcon40b; Classifier: KNN
+2024-12-06 20:34:34,201 - Language: Best Parameters -> {'n_neighbors': np.int64(10)}
+2024-12-06 20:42:24,231 - Task: Best Parameters -> {'n_neighbors': np.int64(11)}
+2024-12-06 20:42:41,163 - Final Accuracy -> Language: 0.6435, Task: 0.2418, Desc: 0.0395
+2024-12-06 20:42:41,525 - Model: llama7b; Classifier: KNN
+2024-12-06 20:47:16,649 - Language: Best Parameters -> {'n_neighbors': np.int64(12)}
+2024-12-06 20:52:10,599 - Task: Best Parameters -> {'n_neighbors': np.int64(12)}
+2024-12-06 20:52:21,204 - Final Accuracy -> Language: 0.6468, Task: 0.2503, Desc: 0.0771
+2024-12-06 20:52:21,464 - Model: llama8b; Classifier: KNN
+2024-12-06 20:56:58,842 - Language: Best Parameters -> {'n_neighbors': np.int64(13)}
+2024-12-06 21:02:07,397 - Task: Best Parameters -> {'n_neighbors': np.int64(21)}
+2024-12-06 21:02:19,471 - Final Accuracy -> Language: 0.7239, Task: 0.2726, Desc: 0.1673
+2024-12-06 21:02:20,733 - Model: llama13b; Classifier: KNN
+2024-12-06 21:07:34,512 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-06 21:13:02,913 - Task: Best Parameters -> {'n_neighbors': np.int64(22)}
+2024-12-06 21:13:16,277 - Final Accuracy -> Language: 0.7063, Task: 0.2682, Desc: 0.0940
+2024-12-07 09:53:22,009 - Model: embedding_ada; Classifier: KNN
+2024-12-07 09:53:22,102 - NaN values removed from embeddings.
+2024-12-07 09:54:40,827 - Language: Best Parameters -> {'n_neighbors': np.int64(28)}
+2024-12-07 09:56:01,975 - Task: Best Parameters -> {'n_neighbors': np.int64(16)}
+2024-12-07 09:56:04,868 - Final Accuracy -> Language: 0.5711, Task: 0.6956, Desc: 0.8722
+2024-12-07 09:56:04,988 - Model: embedding_small; Classifier: KNN
+2024-12-07 09:57:24,697 - Language: Best Parameters -> {'n_neighbors': np.int64(28)}
+2024-12-07 09:58:46,336 - Task: Best Parameters -> {'n_neighbors': np.int64(15)}
+2024-12-07 09:58:49,301 - Final Accuracy -> Language: 0.4808, Task: 0.6928, Desc: 0.8346
+2024-12-07 09:58:49,710 - Model: embedding_large; Classifier: KNN
+2024-12-07 10:01:11,729 - Language: Best Parameters -> {'n_neighbors': np.int64(29)}
+2024-12-07 10:03:38,128 - Task: Best Parameters -> {'n_neighbors': np.int64(13)}
+2024-12-07 10:03:43,194 - Final Accuracy -> Language: 0.5473, Task: 0.7661, Desc: 0.9248
+2024-12-07 10:03:43,359 - Model: codebert; Classifier: KNN
+2024-12-07 10:04:39,973 - Language: Best Parameters -> {'n_neighbors': np.int64(11)}
+2024-12-07 10:05:38,200 - Task: Best Parameters -> {'n_neighbors': np.int64(23)}
+2024-12-07 10:05:40,021 - Final Accuracy -> Language: 0.4357, Task: 0.1465, Desc: 0.0169
+2024-12-07 10:05:40,699 - Model: codegpt; Classifier: KNN
+2024-12-07 10:06:36,872 - Language: Best Parameters -> {'n_neighbors': np.int64(12)}
+2024-12-07 10:07:34,937 - Task: Best Parameters -> {'n_neighbors': np.int64(12)}
+2024-12-07 10:07:36,738 - Final Accuracy -> Language: 0.5344, Task: 0.2958, Desc: 0.0414
+2024-12-07 10:07:39,134 - Model: code7b; Classifier: KNN
+2024-12-07 10:13:19,520 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-07 10:19:04,096 - Task: Best Parameters -> {'n_neighbors': np.int64(20)}
+2024-12-07 10:19:15,064 - Final Accuracy -> Language: 0.7141, Task: 0.2797, Desc: 0.0714
+2024-12-07 10:19:20,833 - Model: code13b; Classifier: KNN
+2024-12-07 10:25:41,407 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-07 10:32:22,878 - Task: Best Parameters -> {'n_neighbors': np.int64(22)}
+2024-12-07 10:32:35,811 - Final Accuracy -> Language: 0.7245, Task: 0.2782, Desc: 0.0752
+2024-12-07 10:32:42,551 - Model: code34b; Classifier: KNN
+2024-12-07 10:41:38,834 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-07 10:50:52,987 - Task: Best Parameters -> {'n_neighbors': np.int64(19)}
+2024-12-07 10:51:11,080 - Final Accuracy -> Language: 0.7249, Task: 0.2725, Desc: 0.0470
+2024-12-07 10:51:16,572 - Model: code70b; Classifier: KNN
+2024-12-07 11:00:10,576 - Language: Best Parameters -> {'n_neighbors': np.int64(8)}
+2024-12-07 11:09:28,766 - Task: Best Parameters -> {'n_neighbors': np.int64(13)}
+2024-12-07 11:09:47,774 - Final Accuracy -> Language: 0.7081, Task: 0.2581, Desc: 0.0395
+2024-12-09 15:34:37,606 - Model: llama70b; Classifier: KNN
+2024-12-09 15:44:26,011 - Language: Best Parameters -> {'n_neighbors': np.int64(9)}
+2024-12-09 15:54:32,417 - Task: Best Parameters -> {'n_neighbors': np.int64(25)}
+2024-12-09 15:54:50,657 - Final Accuracy -> Language: 0.7423, Task: 0.2458, Desc: 0.0714
+

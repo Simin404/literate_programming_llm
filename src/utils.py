@@ -7,7 +7,7 @@ import pandas as pd
 import os
 from os.path import isfile, join
 from os import listdir
-
+import pickle
 
 def file_to_df(file_path):
     tasks= [f for f in os.listdir(file_path) if not f.startswith('.') ]
@@ -128,6 +128,4 @@ def loading_embeddings(file_path):
         return saved_emb
     except:
         print('File not found!')
-
-
 
