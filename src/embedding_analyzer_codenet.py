@@ -12,27 +12,21 @@ import numpy as np
 from src.cnn import *
 from src.utils import *
 
-
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_filename = f"log/{timestamp}.log"
 logging.basicConfig(filename=log_filename, level=logging.INFO, format='%(asctime)s - %(message)s')
 
-class EmbeddingAnalyzer:
-    def __init__(self, model_name: str, classifier: str, params):
+class EmbeddingAnalyzerNet:
+    def __init__(self, model_name: str, classifier: str):
         self.model_name = model_name
         self.classifier = classifier
-        # train_path = f'out/train/{self.model_name}_24892.pt'
-        # test_path = f'out/test/{self.model_name}_13786.pt'
-        # desc_path = f'out/desc/{self.model_name}_532.pt'
-
         train_path = f'out/train/{self.model_name}_1725993.pt'
         test_path = f'out/test/{self.model_name}_1824.pt'
         desc_path = f'out/desc/{self.model_name}_55.pt'
-
         self.train_emb = torch.load(train_path, map_location="cpu")
         self.test_emb = torch.load(test_path, map_location="cpu")
         self.desc_emb = torch.load(desc_path, map_location="cpu")
-        self.params = params
+
 
     def preprocess_desc(self, train_df, test_df, desc_df):
         if self.model_name == 'embedding_ada':
@@ -49,19 +43,23 @@ class EmbeddingAnalyzer:
     
     def predict_cnn(self, train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task):
         device = getting_device()
-        model_lang, acc_lang, _ = train_cnn_model(self.train_emb, train_y_lang, self.test_emb, test_y_lang, device, X_desc=None, y_desc=None, params=self.params)
-        model_task, acc_task, acc_desc = train_cnn_model(self.train_emb, train_y_task, self.test_emb, test_y_task, device, X_desc = self.desc_emb, y_desc=desc_y_task, params=self.params)
+        model_lang, acc_lang, _ = train_cnn_model(self.train_emb, train_y_lang, self.test_emb, test_y_lang, device)
+        model_task, acc_task, acc_desc = train_cnn_model(self.train_emb, train_y_task, self.test_emb, test_y_task, device, X_desc = self.desc_emb, y_desc=desc_y_task)
+        
+        # outputs = model_task(self.desc_emb)
+        # y_pred = torch.argmax(outputs, dim=1)
+        # acc_ = accuracy_score(desc_y_task, y_pred)
+        # logging.info(f'Accuracy -> Language: {acc_}')
 
         logging.info(f'Accuracy -> Language: {acc_lang}')
         logging.info(f'Accuracy -> Task: {acc_task}')
         logging.info(f'Accuracy -> Desc: {acc_desc}')
+        # return acc_lang, acc_task, acc_desc
 
     def analyze(self, train_df, test_df, desc_df):
-        params_str = self.params if self.params else 'default'
-        logging.info(f'Model: {self.model_name}; Classifier: {self.classifier}; Parameters: {params_str}')
-
+        logging.info(f'Model: {self.model_name}; Classifier: {self.classifier}')
         train_df, test_df, desc_df = self.preprocess_desc(train_df, test_df, desc_df)
-        logging.info(f'train_df: {train_df.shape}; test_df: {test_df.shape}; self.train_emb: {self.train_emb.shape}')
+        # Use the map_label method to encode labels
         train_y_lang, test_y_lang, _, _ = self.map_label(train_df['language'], test_df['language'])
         train_y_task, test_y_task, desc_y_task, _ = self.map_label(train_df['task'], test_df['task'], desc_df['task'])
 
@@ -70,6 +68,7 @@ class EmbeddingAnalyzer:
             return 0, 0, 0
 
         model, param_grid = self.select_classifier_and_params()
+
         if model is None:
             logging.error("Invalid classifier name!")
             return 0, 0, 0
@@ -81,7 +80,7 @@ class EmbeddingAnalyzer:
     def select_classifier_and_params(self):
         if self.classifier == 'KNN':
             # return KNeighborsClassifier(), {'n_neighbors': np.arange(2, 5)}
-            return KNeighborsClassifier(), {'n_neighbors': np.arange(7, 30)}
+            return KNeighborsClassifier(), {'n_neighbors': np.arange(10, 11)}
         elif self.classifier == 'SVM':
             return SVC(), {'C': [100], 'degree': [1], 'kernel': ['poly']}
             # return SVC(), {'C': [100, 1000, 5000, 10000], 'degree': [1], 'kernel': ['poly']}
@@ -135,8 +134,13 @@ class EmbeddingAnalyzer:
 
     @staticmethod
     def remove_nan_rows(tensor):
+        # Find rows with any NaN values
         nan_mask = torch.isnan(tensor).any(dim=1)
+        
+        # Indices of rows to remove
         removed_indices = torch.where(nan_mask)[0].tolist()
+        
+        # Tensor without rows containing NaN
         cleaned_tensor = tensor[~nan_mask]
         
         return cleaned_tensor, removed_indices

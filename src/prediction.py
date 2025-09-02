@@ -2,10 +2,10 @@ import torch
 import time
 import numpy as np
 import pandas as pd
-from src.part_emb_analyzer import EmbeddingAnalyzer
+from embedding_analyzer import EmbeddingAnalyzer
+from src.codenet_emb_analyzer import EmbeddingAnalyzerNet
 import pickle
 from src.extracting_embedding import extract_embedding
-from src.clustering import KNN
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
@@ -342,6 +342,33 @@ def part_data_analysis(tasks, languages, train_df, test_df):
         for m in model_names:
             if r_dic[m][c][goals[0]] is None:
                 analyzer = EmbeddingAnalyzer(model_name = m , classifier = c, indices_train = indices_train, indices_test = indices_test)
+                acc1, acc2 = analyzer.analyze(train_df, test_df)
+                r_dic[m][c][goals[0]], r_dic[m][c][goals[1]] = round(acc1, 4), round(acc2, 4)
+                print('Model: {}; Classifier: {}'.format(m, c))
+                print('--------------------------------------------------------')
+            else:
+                print('Pass as already caculated!')
+    out_path = "out/experiment2/"+str(len(tasks))+".pkl"
+    append_pickle(out_path, r_dic)
+    return r_dic
+
+
+def codenet_data_analysis(tasks, languages, train_df, test_df):
+
+    indices_train = train_df.index[train_df['task'].isin(tasks) & train_df['language'].isin(languages)].tolist()
+    indices_test = test_df.index[test_df['task'].isin(tasks) & test_df['language'].isin(languages)].tolist()
+
+    model_names = ['embedding_ada']
+    ##['bert', 'gpt', 'roberta', 'falcon7b', 'falcon11b',  'falcon40b', 'llama7b', 'llama8b', 'llama13b']
+    ## model_names =  ['embedding_ada', 'embedding_small', 'embedding_large', 'codebert', 'codegpt', 'code7b', 'code13b', 'code34b', 'code70b']
+    classifier_names = ['SVM', 'KNN']
+    goals = ['lang', 'task']
+    r_dic = {model: {classifier: {goal: None for goal in goals} for classifier in classifier_names} for model in model_names}
+    print(model_names)
+    for c in classifier_names:
+        for m in model_names:
+            if r_dic[m][c][goals[0]] is None:
+                analyzer = EmbeddingAnalyzerNet(model_name = m , classifier = c, indices_train = indices_train, indices_test = indices_test)
                 acc1, acc2 = analyzer.analyze(train_df, test_df)
                 r_dic[m][c][goals[0]], r_dic[m][c][goals[1]] = round(acc1, 4), round(acc2, 4)
                 print('Model: {}; Classifier: {}'.format(m, c))

@@ -5,19 +5,20 @@ import torch.optim as optim
 from torch.utils.data import DataLoader, TensorDataset
 from src.utils import *
 
-def train_cnn_model(X_train, y_train, X_test, y_test, device, X_desc=None, y_desc=None):
+def train_cnn_model(X_train, y_train, X_test, y_test, device, X_desc=None, y_desc=None, params=None):
 
-    ## Hyper parameter
+    ## Hyper parameter  
 
-    l_r = 0.0001
-    stop_threshold = 0.005
+    l_r = params['l_r']
+    stop_threshold = params['stop_threshold']
+    b_size = params['b_size']
     num_epochs = 100
-    b_size = 256
-    print(f'Learning Rate: {l_r}; Batch size: {b_size}; Num epochs: {num_epochs}; Stop threshold: {stop_threshold}')
+    print(f'Learning Rate: {l_r}; Batch size: {b_size}; Stop threshold: {stop_threshold}')
     num_classes = len(y_train.unique())
     X_train = np.array(X_train).reshape(X_train.shape[0], 1, X_train.shape[1])
     X_train = torch.tensor(X_train, dtype=torch.float32)  
     y_train = torch.tensor(np.array(y_train), dtype=torch.long)
+    # print(f'Size of X_train: {X_train.shape}, Size of y_train: {y_train.shape}')
     train_data = TensorDataset(X_train, y_train)
     train_dl = DataLoader(train_data, batch_size=b_size, shuffle=True, drop_last=True)
 
@@ -115,11 +116,16 @@ def predict_dl(model, data_dl, device):
 
             outputs = model(batch_X)
             y_pred = torch.argmax(outputs, dim=1)
-            c = (y_pred == batch_y).sum().item()
-            correct += c
+
+            correct += (y_pred == batch_y).sum().item()
             total += batch_y.size(0)
+
+    # Prevent division by zero
+    if total == 0:
+        return 0.0
     accuracy = correct / total
     return accuracy
+
 
 # def predict(model, X_test, y_test, device):   
 #     model.eval()

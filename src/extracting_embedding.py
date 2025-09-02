@@ -3,9 +3,15 @@ from transformers import AutoModelForMaskedLM, AutoTokenizer, AutoConfig, AutoMo
 import torch
 import time
 
+import os
+from dotenv import load_dotenv
+
 def extract_embedding(df, device, model='gpt'):
     output_path = 'out/'+model+'_'+str(len(df))+'.pt'
-    access_token = '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'
+    
+    load_dotenv()
+    access_token = os.getenv("HUGGINGFACE_API_KEY")
+
     print(output_path)
     if model == 'gpt':
         print('Model vertified: GPT')

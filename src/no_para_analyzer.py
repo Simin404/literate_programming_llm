@@ -12,23 +12,17 @@ import numpy as np
 from src.cnn import *
 from src.utils import *
 
-
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_filename = f"log/{timestamp}.log"
 logging.basicConfig(filename=log_filename, level=logging.INFO, format='%(asctime)s - %(message)s')
 
-class EmbeddingAnalyzer:
+class No_Para_Analyzer:
     def __init__(self, model_name: str, classifier: str, params):
         self.model_name = model_name
         self.classifier = classifier
-        # train_path = f'out/train/{self.model_name}_24892.pt'
-        # test_path = f'out/test/{self.model_name}_13786.pt'
-        # desc_path = f'out/desc/{self.model_name}_532.pt'
-
         train_path = f'out/train/{self.model_name}_1725993.pt'
         test_path = f'out/test/{self.model_name}_1824.pt'
         desc_path = f'out/desc/{self.model_name}_55.pt'
-
         self.train_emb = torch.load(train_path, map_location="cpu")
         self.test_emb = torch.load(test_path, map_location="cpu")
         self.desc_emb = torch.load(desc_path, map_location="cpu")
@@ -62,40 +56,34 @@ class EmbeddingAnalyzer:
 
         train_df, test_df, desc_df = self.preprocess_desc(train_df, test_df, desc_df)
         logging.info(f'train_df: {train_df.shape}; test_df: {test_df.shape}; self.train_emb: {self.train_emb.shape}')
-        train_y_lang, test_y_lang, _, _ = self.map_label(train_df['language'], test_df['language'])
+        train_y_lang, test_y_lang, _ , _ = self.map_label(train_df['language'], test_df['language'])
         train_y_task, test_y_task, desc_y_task, _ = self.map_label(train_df['task'], test_df['task'], desc_df['task'])
 
         if self.classifier == 'CNN':
             self.predict_cnn(train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task)
             return 0, 0, 0
 
-        model, param_grid = self.select_classifier_and_params()
+        model = self.get_classifier_with_params()
         if model is None:
-            logging.error("Invalid classifier name!")
+            logging.error("Invalid classifier name or parameters!")
             return 0, 0, 0
 
-        return self.predict_and_evaluate(
-            model, param_grid, train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task
-        )
+        return self.predict_and_evaluate(model, train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task)
 
-    def select_classifier_and_params(self):
+
+    def get_classifier_with_params(self):
         if self.classifier == 'KNN':
-            # return KNeighborsClassifier(), {'n_neighbors': np.arange(2, 5)}
-            return KNeighborsClassifier(), {'n_neighbors': np.arange(7, 30)}
+            return KNeighborsClassifier(**self.params) if self.params else KNeighborsClassifier()
         elif self.classifier == 'SVM':
-            return SVC(), {'C': [100], 'degree': [1], 'kernel': ['poly']}
-            # return SVC(), {'C': [100, 1000, 5000, 10000], 'degree': [1], 'kernel': ['poly']}
+            return SVC(**self.params) if self.params else SVC()
         elif self.classifier == 'Forest':
-            return RandomForestClassifier(random_state=42), {
-                'n_estimators': [200, 300],
-                'max_depth': [None],
-                'min_samples_split': [2],
-                'min_samples_leaf': [2]}      
-        return None, None
+            return RandomForestClassifier(**self.params) if self.params else RandomForestClassifier(random_state=42)
+        return None
 
-    def predict_and_evaluate(self, model, param_grid, train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task):
-        acc_lang, _ = self.train_and_evaluate(model, param_grid, self.train_emb, train_y_lang, self.test_emb, test_y_lang, "Language")
-        acc_task, model_task = self.train_and_evaluate(model, param_grid, self.train_emb, train_y_task, self.test_emb, test_y_task, "Task")
+
+    def predict_and_evaluate(self, model, train_y_lang, test_y_lang, train_y_task, test_y_task, desc_y_task):
+        acc_lang = self.train_and_evaluate(model, self.train_emb, train_y_lang, self.test_emb, test_y_lang, "Language")
+        acc_task, model_task = self.train_and_evaluate_with_model(model, self.train_emb, train_y_task, self.test_emb, test_y_task, "Task")
 
         y_pred = model_task.predict(self.desc_emb)
         acc_desc = accuracy_score(desc_y_task, y_pred)
@@ -103,14 +91,20 @@ class EmbeddingAnalyzer:
         logging.info(f'Final Accuracy -> Language: {acc_lang:.4f}, Task: {acc_task:.4f}, Desc: {acc_desc:.4f}')
         return acc_lang, acc_task, acc_desc
 
-    def train_and_evaluate(self, model, param_grid, train_x, train_y, test_x, test_y, label: str):
-        grid_search = GridSearchCV(model, param_grid, cv=3, scoring='accuracy')
-        grid_search.fit(train_x, train_y)
 
-        logging.info(f"{label}: Best Parameters -> {grid_search.best_params_}")
-        best_model = grid_search.best_estimator_
-        y_pred = best_model.predict(test_x)
-        return accuracy_score(test_y, y_pred), best_model
+    def train_and_evaluate(self, model, train_x, train_y, test_x, test_y, label: str):
+        model.fit(train_x, train_y)
+        y_pred = model.predict(test_x)
+        acc = accuracy_score(test_y, y_pred)
+        logging.info(f"{label}: Accuracy -> {acc:.4f}")
+        return acc
+
+    def train_and_evaluate_with_model(self, model, train_x, train_y, test_x, test_y, label: str):
+        model.fit(train_x, train_y)
+        y_pred = model.predict(test_x)
+        acc = accuracy_score(test_y, y_pred)
+        logging.info(f"{label}: Accuracy -> {acc:.4f}")
+        return acc, model
 
     @staticmethod
     def map_label(train_label, test_label, desc_label=None):

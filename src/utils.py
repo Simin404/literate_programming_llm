@@ -1,4 +1,3 @@
-
 from datasets import load_dataset
 from collections import Counter
 import os
@@ -8,6 +7,7 @@ import os
 from os.path import isfile, join
 from os import listdir
 import pickle
+import re
 
 def file_to_df(file_path):
     tasks= [f for f in os.listdir(file_path) if not f.startswith('.') ]
@@ -129,3 +129,51 @@ def loading_embeddings(file_path):
     except:
         print('File not found!')
 
+
+def parse_log_file(file_path):
+    # Dictionary to hold results per model
+    results = []
+
+    current_model = None
+    current_classifier = None
+    current_params = None
+
+    with open(file_path, "r") as f:
+        for line in f:
+            # Detect model line
+            model_match = re.search(r"Model:\s*(\S+);\s*Classifier:\s*(\S+);\s*Parameters:\s*(\{.*\})", line)
+            if model_match:
+                current_model = model_match.group(1)
+                current_classifier = model_match.group(2)
+                current_params = eval(model_match.group(3))  # safe since it's just dict-like text
+
+            # Detect Language accuracy
+            if "Accuracy -> Language" in line:
+                accuracies = eval(line.split("Accuracy -> Language:")[1].strip())
+                last_epoch = max(accuracies.keys())
+                lang_acc = accuracies[last_epoch]
+            # Detect Task accuracy
+            if "Accuracy -> Task" in line:
+                accuracies = eval(line.split("Accuracy -> Task:")[1].strip())
+                last_epoch = max(accuracies.keys())
+                task_acc = accuracies[last_epoch]
+            # Detect Desc accuracy
+            if "Accuracy -> Desc" in line:
+                accuracies = eval(line.split("Accuracy -> Desc:")[1].strip())
+                last_epoch = max(accuracies.keys())
+                desc_acc = accuracies[last_epoch]
+
+                # Once we see Desc, it means we have all 3 → store the row
+                results.append({
+                    "Model": current_model,
+                    "Classifier": current_classifier,
+                    "Parameters": current_params,
+                    "Lang_Epoch": last_epoch,
+                    "Lang_Acc": lang_acc,
+                    "Task_Epoch": last_epoch,
+                    "Task_Acc": task_acc,
+                    "Desc_Epoch": last_epoch,
+                    "Desc_Acc": desc_acc,
+                })
+
+    return results
