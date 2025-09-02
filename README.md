@@ -1,5 +1,5 @@
 # Replication Package  
-## Literate Programming via LLMs  
+## Literate Programming with LLMs  
 
 This repository contains the replication package for experiments on literate programming using large language models (LLMs).  
 
