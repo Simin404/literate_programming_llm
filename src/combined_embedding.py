@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 import argparse
 import pandas as pd
+from pathlib import Path
 
 def combined_embedding(train_df, test_df, desc_df, vis_df=None, device=None, model='gpt'):
     train_path = 'out/train/'+model+'_'+str(len(train_df))+'.pt'
@@ -174,8 +175,9 @@ def embed_from_model(train_df, test_df, desc_df, vis_df, device, train_path, tes
     if not os.path.exists(train_path):
         chunk_idx = 0
         start_idx = 0
-        end_idx =   len(train_df)
+        end_idx = len(train_df)
         save_steps = 100000
+        train_path = Path(train_path) 
         base_path = train_path.with_suffix('')
         while os.path.exists(f"{base_path}_part{chunk_idx}{train_path.suffix}"):
             chunk_idx += 1
@@ -361,7 +363,6 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
 
 
