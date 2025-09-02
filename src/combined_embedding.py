@@ -11,8 +11,10 @@ def combined_embedding(train_df, test_df, desc_df, vis_df=None, device=None, mod
     train_path = 'out/train/'+model+'_'+str(len(train_df))+'.pt'
     test_path = 'out/test/'+model+'_'+str(len(test_df))+'.pt'
     desc_path = 'out/desc/'+model+'_'+str(len(desc_df))+'.pt'
-    # vis_path = 'out/visualization/'+model+'_'+str(len(vis_df))+'.pt'
-    vis_path = ''
+    if vis_df is not None:
+        vis_path = 'out/visualization/'+model+'_'+str(len(vis_df))+'.pt'
+    else:
+        vis_path = ''
 
     load_dotenv()
     access_token = os.getenv("HUGGINGFACE_API_KEY")
@@ -273,26 +275,26 @@ def embed_from_model(train_df, test_df, desc_df, vis_df, device, train_path, tes
     torch.cuda.empty_cache()
 
 
-
-    for i in range(len(vis_df)):
-        text = vis_df['code'].values[i]
-        encoded_input = tokenizer(
-            text,  # Only one input at a time
-            max_length=max_len,
-            truncation=True,
-            padding=False,
-            return_tensors='pt'
-        ).to(device)
-        with torch.no_grad():
-            embeddings = model(**encoded_input).last_hidden_state.mean(dim=1).detach()
-        vis_embeddings.append(embeddings.cpu())
-        if (i + 1) % 5000 == 0:
-            print(f"Time elapsed: {time.time() - time_start:.2f} seconds, Data processed: {i + 1}")
-            time_start = time.time()
-    # Save the embeddings to the output path
-    vis_embeddings = torch.cat(vis_embeddings, dim=0)
-    torch.save(vis_embeddings, vis_path)
-    print("End of extraction. Number of records:", str(vis_embeddings.shape))
+    if vis_df is not None:
+        for i in range(len(vis_df)):
+            text = vis_df['code'].values[i]
+            encoded_input = tokenizer(
+                text,  # Only one input at a time
+                max_length=max_len,
+                truncation=True,
+                padding=False,
+                return_tensors='pt'
+            ).to(device)
+            with torch.no_grad():
+                embeddings = model(**encoded_input).last_hidden_state.mean(dim=1).detach()
+            vis_embeddings.append(embeddings.cpu())
+            if (i + 1) % 5000 == 0:
+                print(f"Time elapsed: {time.time() - time_start:.2f} seconds, Data processed: {i + 1}")
+                time_start = time.time()
+        # Save the embeddings to the output path
+        vis_embeddings = torch.cat(vis_embeddings, dim=0)
+        torch.save(vis_embeddings, vis_path)
+        print("End of extraction. Number of records:", str(vis_embeddings.shape))
     
 
 
